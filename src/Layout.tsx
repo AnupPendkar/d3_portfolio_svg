@@ -5,26 +5,25 @@ import angular from "./assets/angular.svg";
 import react from "./assets/react.svg";
 import node from "./assets/node.svg";
 import js from "./assets/js.png";
-import { d3SelectionBase } from "./models";
+import { ICoordinates, d3SelectionBase } from "./models";
 
 const Layout = () => {
   const svgW = 1200;
   const svgH = 800;
 
-  const w = React.useRef(600);
-  const h = React.useRef(600);
+  const parentImgWidth = 600;
+  const parentImgHeight = 600;
+  const parentImgX = 0;
+  const parentImgY = 0;
 
-  let parentImgStartCoord;
-
-  const parentImgX = React.useRef(0);
-  const parentImgY = React.useRef(0);
+  let parentImgStartCoord: ICoordinates;
 
   let parentSvgRef: d3SelectionBase;
   let parentImgRef: d3SelectionBase;
 
-  const deskCardCollections: d3SelectionBase[] = [];
+  const posterCardCollections: d3SelectionBase[] = [];
 
-  function createDeskCard(
+  function createPosterCard(
     width: number,
     height: number,
     img: string,
@@ -40,9 +39,7 @@ const Layout = () => {
       .attr("height", height)
       .attr(
         "transform",
-        `translate(${x + parentImgX.current}, ${
-          y + parentImgY.current
-        }) rotate(${rotate})`
+        `translate(${x + parentImgX}, ${y + parentImgY}) rotate(${rotate})`
       )
       .style("pointer-events", "all");
 
@@ -68,24 +65,24 @@ const Layout = () => {
       .attr("xlink:href", img)
       .style("pointer-events", "none");
 
-    deskCardCollections.push(group);
+    posterCardCollections.push(group);
   }
 
   function setDeskCardWidthHeight(x: number, y: number) {
-    deskCardCollections.forEach((val) => {
+    posterCardCollections.forEach((val) => {
       const b = val?.["_groups"]?.[0]?.[0]?.__data__;
       val.attr(
         "transform",
-        `translate(${b?.x + x + parentImgX.current}, ${
-          b?.y + y + parentImgY.current
-        }) rotate(${b?.rotate})`
+        `translate(${b?.x + x + parentImgX}, ${b?.y + y + parentImgY}) rotate(${
+          b?.rotate
+        })`
       );
     });
   }
 
   function handleDrag(x: number, y: number) {
-    const newX = parentImgStartCoord?.x + x;
-    const newY = parentImgStartCoord?.y + y;
+    const newX = parentImgStartCoord?.xCoordinate + x;
+    const newY = parentImgStartCoord?.yCoordinate + y;
     // Update the position of the dragged element
     parentImgRef.attr("x", newX).attr("y", newY);
     setDeskCardWidthHeight(newX, newY);
@@ -108,49 +105,55 @@ const Layout = () => {
       .style("border-radius", "inherit");
   }
 
-  function createParentImg() {
-    parentImgRef = parentSvgRef
-      .append("image")
-      .attr("x", parentImgX.current)
-      .attr("y", parentImgY.current)
-      .attr("width", w.current)
-      .attr("height", h.current)
-      .attr("xlink:href", desk)
-      .attr("pointer-events", "all")
-      .style("pointer-events", "all");
-
-    let initialCoord;
+  function registerDragEvents() {
+    let initialCoord: ICoordinates;
     parentImgRef.call(
       d3
         .drag()
         .on("start", (e) => {
           parentImgStartCoord = {
-            x: +parentImgRef?.attr("x"),
-            y: +parentImgRef?.attr("y"),
+            xCoordinate: +parentImgRef?.attr("x"),
+            yCoordinate: +parentImgRef?.attr("y"),
           };
-          initialCoord = { x: e?.x, y: e?.y };
+          initialCoord = { xCoordinate: e?.x, yCoordinate: e?.y };
         })
         .on("drag", (e) => {
-          // console.log(parentImgRef?.x)
-          handleDrag(e?.x - initialCoord?.x, e?.y - initialCoord?.y);
+          handleDrag(
+            e?.x - initialCoord?.xCoordinate,
+            e?.y - initialCoord?.yCoordinate
+          );
         })
     );
   }
 
+  function createParentImg() {
+    parentImgRef = parentSvgRef
+      .append("image")
+      .attr("x", parentImgX)
+      .attr("y", parentImgY)
+      .attr("width", parentImgWidth)
+      .attr("height", parentImgHeight)
+      .attr("xlink:href", desk)
+      .attr("pointer-events", "all")
+      .style("pointer-events", "all");
+
+    registerDragEvents();
+  }
+
   function createCardOverlays() {
-    createDeskCard(67, 98, angular, 128, 3);
-    createDeskCard(70, 98, react, 200, 3);
+    createPosterCard(67, 98, angular, 128, 3);
+    createPosterCard(70, 98, react, 200, 3);
 
-    createDeskCard(67, 98, node, 287, 3);
-    createDeskCard(67, 98, js, 358, 3);
+    createPosterCard(67, 98, node, 287, 3);
+    createPosterCard(67, 98, js, 358, 3);
 
-    createDeskCard(30, 30, js, 153, 176, -14);
-    createDeskCard(30, 35, js, 189, 198, 44);
+    createPosterCard(30, 30, js, 153, 176, -14);
+    createPosterCard(30, 35, js, 189, 198, 44);
 
-    createDeskCard(30, 30, js, 354, 164, -3);
-    createDeskCard(30, 35, js, 390, 168, 1);
+    createPosterCard(30, 30, js, 354, 164, -3);
+    createPosterCard(30, 35, js, 390, 168, 1);
 
-    createDeskCard(32, 45, js, 381, 212, 3.5);
+    createPosterCard(32, 45, js, 381, 212, 3.5);
   }
 
   function onInit() {

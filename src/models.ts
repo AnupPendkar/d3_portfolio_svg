@@ -6,3 +6,9 @@ export type d3SelectionBase = d3.Selection<
   HTMLElement | any,
   any
 >;
+
+export interface ICoordinates {
+  xCoordinate: number;
+  yCoordinate: number;
+  rotationAngle?: number;
+}
