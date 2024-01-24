@@ -7,9 +7,9 @@ import node from "../assets/node.svg";
 import js from "../assets/js.png";
 import { ICoordinates, d3SelectionBase } from "../models";
 
-const useDeskSvg = () => {
-  const svgW = 1200;
-  const svgH = 800;
+const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
+  const svgW = 700;
+  const svgH = 700;
 
   const parentImgWidth = 600;
   const parentImgHeight = 600;
@@ -24,6 +24,7 @@ const useDeskSvg = () => {
   const posterCardCollections: d3SelectionBase[] = [];
 
   function createPosterCard(
+    skillName: string,
     width: number,
     height: number,
     img: string,
@@ -50,6 +51,9 @@ const useDeskSvg = () => {
       .style("box-shadow", "1px 9px 20px 6px #1a1a1a")
       .style("border-radius", "7")
       .attr("fill", "#596371")
+      .on("click", () => {
+        onPosterClk(skillName);
+      })
       .on("mouseover", () => {
         rect.transition().duration(100).attr("fill", "#fff");
       })
@@ -141,19 +145,19 @@ const useDeskSvg = () => {
   }
 
   function createCardOverlays() {
-    createPosterCard(67, 98, angular, 128, 3);
-    createPosterCard(70, 98, react, 200, 3);
+    createPosterCard("angular", 67, 98, angular, 128, 3);
+    createPosterCard("react", 70, 98, react, 200, 3);
 
-    createPosterCard(67, 98, node, 287, 3);
-    createPosterCard(67, 98, js, 358, 3);
+    createPosterCard("nodeJs", 67, 98, node, 287, 3);
+    createPosterCard("js", 67, 98, js, 358, 3);
 
-    createPosterCard(30, 30, js, 153, 176, -14);
-    createPosterCard(30, 35, js, 189, 198, 44);
+    createPosterCard("js", 30, 30, js, 153, 176, -14);
+    createPosterCard("js", 30, 35, js, 189, 198, 44);
 
-    createPosterCard(30, 30, js, 354, 164, -3);
-    createPosterCard(30, 35, js, 390, 168, 1);
+    createPosterCard("js", 30, 30, js, 354, 164, -3);
+    createPosterCard("js", 30, 35, js, 390, 168, 1);
 
-    createPosterCard(32, 45, js, 381, 212, 3.5);
+    createPosterCard("js", 32, 45, js, 381, 212, 3.5);
   }
 
   function onInit() {
