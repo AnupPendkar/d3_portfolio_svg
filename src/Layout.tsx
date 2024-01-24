@@ -8,21 +8,42 @@ import js from "./assets/js.png";
 import { d3SelectionBase } from "./models";
 
 const Layout = () => {
+  const svgW = 1200;
+  const svgH = 800;
+
   const w = React.useRef(600);
   const h = React.useRef(600);
-  let svg: d3SelectionBase;
+
+  let parentImgStartCoord;
+
+  const parentImgX = React.useRef(0);
+  const parentImgY = React.useRef(0);
+
+  let parentSvgRef: d3SelectionBase;
+  let parentImgRef: d3SelectionBase;
+
+  const deskCardCollections: d3SelectionBase[] = [];
 
   function createDeskCard(
     width: number,
     height: number,
     img: string,
-    transform: string
+    x: number,
+    y: number,
+    rotate: number = 0
   ) {
-    const group = svg
+    const group = parentSvgRef
       .append("g")
+      .attr("class", "desk_card_group")
+      .datum({ x, y, rotate })
       .attr("width", width)
       .attr("height", height)
-      .attr("transform", transform)
+      .attr(
+        "transform",
+        `translate(${x + parentImgX.current}, ${
+          y + parentImgY.current
+        }) rotate(${rotate})`
+      )
       .style("pointer-events", "all");
 
     const rect = group
@@ -46,49 +67,96 @@ const Layout = () => {
       .attr("transform", "translate(7.5, 7.5)")
       .attr("xlink:href", img)
       .style("pointer-events", "none");
+
+    deskCardCollections.push(group);
+  }
+
+  function setDeskCardWidthHeight(x: number, y: number) {
+    deskCardCollections.forEach((val) => {
+      const b = val?.["_groups"]?.[0]?.[0]?.__data__;
+      val.attr(
+        "transform",
+        `translate(${b?.x + x + parentImgX.current}, ${
+          b?.y + y + parentImgY.current
+        }) rotate(${b?.rotate})`
+      );
+    });
+  }
+
+  function handleDrag(x: number, y: number) {
+    const newX = parentImgStartCoord?.x + x;
+    const newY = parentImgStartCoord?.y + y;
+    // Update the position of the dragged element
+    parentImgRef.attr("x", newX).attr("y", newY);
+    setDeskCardWidthHeight(newX, newY);
   }
 
   function createParentSvg() {
-    svg = d3
-      .select(".layout")
+    const layout = d3.select(".layout").style("width", "100%");
+
+    parentSvgRef = layout
       .append("svg")
       .attr("version", "1.1")
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .attr("xmlns:xhtml", "http://www.w3.org/1999/xhtml")
-      .attr("width", w.current)
-      .attr("height", h.current)
-      .attr("viewBox", `0 0 ${w.current} ${h.current}`)
+      .attr("width", svgW)
+      .attr("height", svgH)
+      .attr("viewBox", `0 0 ${svgW} ${svgH}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .style("background-color", "transparent")
       .style("border-radius", "inherit");
   }
 
-  function onInit() {
-    createParentSvg();
-
-    svg
+  function createParentImg() {
+    parentImgRef = parentSvgRef
       .append("image")
-      .attr("x", 0)
-      .attr("y", 0)
+      .attr("x", parentImgX.current)
+      .attr("y", parentImgY.current)
       .attr("width", w.current)
       .attr("height", h.current)
       .attr("xlink:href", desk)
-      .style("pointer-events", "none");
+      .attr("pointer-events", "all")
+      .style("pointer-events", "all");
 
-    createDeskCard(67, 98, angular, "translate(128, 3)");
-    createDeskCard(70, 98, react, "translate(200, 3)");
+    let initialCoord;
+    parentImgRef.call(
+      d3
+        .drag()
+        .on("start", (e) => {
+          parentImgStartCoord = {
+            x: +parentImgRef?.attr("x"),
+            y: +parentImgRef?.attr("y"),
+          };
+          initialCoord = { x: e?.x, y: e?.y };
+        })
+        .on("drag", (e) => {
+          // console.log(parentImgRef?.x)
+          handleDrag(e?.x - initialCoord?.x, e?.y - initialCoord?.y);
+        })
+    );
+  }
 
-    createDeskCard(67, 98, node, "translate(287, 3)");
-    createDeskCard(67, 98, js, "translate(358, 3)");
+  function createCardOverlays() {
+    createDeskCard(67, 98, angular, 128, 3);
+    createDeskCard(70, 98, react, 200, 3);
 
-    createDeskCard(30, 30, js, "translate(153, 176) rotate(-14)");
-    createDeskCard(30, 35, js, "translate(189, 198) rotate(44)");
+    createDeskCard(67, 98, node, 287, 3);
+    createDeskCard(67, 98, js, 358, 3);
 
-    createDeskCard(30, 30, js, "translate(354, 164) rotate(-3)");
-    createDeskCard(30, 35, js, "translate(390, 168) rotate(1)");
+    createDeskCard(30, 30, js, 153, 176, -14);
+    createDeskCard(30, 35, js, 189, 198, 44);
 
-    createDeskCard(32, 45, js, "translate(381, 212) rotate(3.5)");
+    createDeskCard(30, 30, js, 354, 164, -3);
+    createDeskCard(30, 35, js, 390, 168, 1);
+
+    createDeskCard(32, 45, js, 381, 212, 3.5);
+  }
+
+  function onInit() {
+    createParentSvg();
+    createParentImg();
+    createCardOverlays();
   }
 
   React.useEffect(() => {
