@@ -1,6 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
 import laptop from "../assets/laptop.svg";
+import desktop from "../assets/desktop.png";
 import { ICoordinates, d3SelectionBase } from "../models";
 
 const useLaptopSvg = (skillName: string) => {
@@ -30,6 +31,22 @@ const useLaptopSvg = (skillName: string) => {
     );
   }
 
+  let parentVal;
+
+  function handleZoom(e) {
+    console.log("zoomed", e);
+    // Update the transform of the chart elements
+    const k = e.transform?.k;
+
+    parentImgRef.attr("transform", e.transform);
+
+
+    parentScreenRef.attr(
+      "transform",
+      `translate(${parentVal[0]}, ${parentVal[1]}) scale(${k})`
+    );
+  }
+
   function registerDragEvents() {
     let initialCoord: ICoordinates;
     parentImgRef.call(
@@ -49,6 +66,24 @@ const useLaptopSvg = (skillName: string) => {
           );
         })
     );
+
+    parentImgRef
+      .call(
+        d3
+          .zoom()
+          .scaleExtent([0.5, 5]) // Set the zoom scale limits
+          .on("start", () => {
+            console.log(parentImgRef.attr("x"), parentImgRef.attr("transform"));
+            parentVal = parentScreenRef
+              .attr("transform")
+              .split("(")[1]
+              .split(")");
+          })
+          .on("zoom", (e) => {
+            handleZoom(e);
+          })
+      )
+      .on("dblclick.zoom", null);
   }
 
   function createParentImg() {
@@ -118,6 +153,13 @@ const useLaptopSvg = (skillName: string) => {
       .attr("transform", "translate(93, 132)");
 
     drawTaperedRect(0, 0, 407, 252, 4);
+
+    parentScreenRef
+      .append("image")
+      .attr("transform", "translate(0, -10)")
+      .attr("width", 407)
+      .attr("height", 252)
+      .attr("xlink:href", desktop);
 
     parentScreenRef.append("text").attr("class", "screen_text");
   }
