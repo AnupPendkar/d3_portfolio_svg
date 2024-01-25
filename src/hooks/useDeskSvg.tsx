@@ -97,6 +97,7 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
 
     parentSvgRef = layout
       .append("svg")
+      .attr('class', 'desk_svg')
       .attr("version", "1.1")
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")

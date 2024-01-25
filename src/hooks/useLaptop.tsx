@@ -16,7 +16,6 @@ const useLaptopSvg = (skillName: string) => {
   let parentSvgRef: d3SelectionBase;
   let parentImgRef: d3SelectionBase;
 
-  let textNode: d3SelectionBase;
   let parentScreenRef: d3SelectionBase;
 
   function handleDrag(x: number, y: number) {
@@ -24,9 +23,10 @@ const useLaptopSvg = (skillName: string) => {
     const newY = parentImgStartCoord?.yCoordinate + y;
     // Update the position of the dragged element
     parentImgRef.attr("x", newX).attr("y", newY);
+
     parentScreenRef.attr(
       "transform",
-      `translate(${95 + newX + parentImgX}, ${134 + newY + parentImgY})`
+      `translate(${93 + newX + parentImgX}, ${132 + newY + parentImgY})`
     );
   }
 
@@ -70,6 +70,7 @@ const useLaptopSvg = (skillName: string) => {
 
     parentSvgRef = layout
       .append("svg")
+      .attr("class", "laptop_svg")
       .attr("version", "1.1")
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
@@ -82,22 +83,49 @@ const useLaptopSvg = (skillName: string) => {
       .style("border-radius", "inherit");
   }
 
+  function drawTaperedRect(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    taper: number
+  ) {
+    // Calculate the points for the tapered rectangle
+    const points: { x: number; y: number }[] = [
+      { x: x, y: y },
+      { x: x + width, y: y },
+      { x: x + width + taper, y: y + height },
+      { x: x - taper, y: y + height },
+    ];
+
+    // Create a line function
+    const line = d3
+      .line<{ x: number; y: number }>()
+      .x((d) => d.x)
+      .y((d) => d.y);
+
+    // Draw the tapered rectangle
+    parentScreenRef
+      .append("path")
+      .attr("d", line(points))
+      .attr("fill", "black");
+  }
+
   function createLaptopScreen() {
     parentScreenRef = parentSvgRef
       .append("g")
       .attr("class", "laptop__screen")
-      .attr("transform", "translate(95, 134)");
+      .attr("transform", "translate(93, 132)");
 
-    parentScreenRef
-      .append("rect")
-      .attr("width", "403")
-      .attr("height", "247")
-      .attr("fill", "black");
+    drawTaperedRect(0, 0, 407, 252, 4);
 
-    // textNode = parentScreenRef
-    // .append("text").text("dkjk")
-    // parentScreenRef
-    // .append("text").text("dkjk").attr('x', 50);
+    parentScreenRef.append("text").attr("class", "screen_text");
+  }
+
+  function onSkillPosterClk() {
+    parentSvgRef = d3.select(".laptop_svg");
+    parentScreenRef = parentSvgRef.select(".laptop__screen");
+    parentScreenRef.select(".screen_text").text(skillName);
   }
 
   function init() {
@@ -108,8 +136,7 @@ const useLaptopSvg = (skillName: string) => {
 
   React.useEffect(() => {
     if (skillName !== "") {
-      console.log(skillName);
-      //   textNode.text("sff").attr("x", 20).attr("y", 20);
+      onSkillPosterClk();
     }
   }, [skillName]);
 
