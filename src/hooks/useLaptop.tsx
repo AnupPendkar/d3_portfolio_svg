@@ -1,93 +1,55 @@
 import React from "react";
 import * as d3 from "d3";
 import laptop from "../assets/laptop.svg";
-import desktop from "../assets/desktop.png";
-import { ICoordinates, d3SelectionBase } from "../models";
+import { d3SelectionBase } from "../models";
+import useFrame from "./useFrame";
 
 const useLaptopSvg = (skillName: string) => {
+  const frame = useFrame();
   const svgW = 700;
-  const svgH = 700;
+  const svgH = window.innerHeight;
 
   const parentImgWidth = 600;
   const parentImgHeight = 600;
   const parentImgX = 0;
   const parentImgY = 0;
 
-  let parentImgStartCoord: ICoordinates;
   let parentSvgRef: d3SelectionBase;
   let parentImgRef: d3SelectionBase;
-
   let parentScreenRef: d3SelectionBase;
 
-  function handleDrag(x: number, y: number) {
-    const newX = parentImgStartCoord?.xCoordinate + x;
-    const newY = parentImgStartCoord?.yCoordinate + y;
-    // Update the position of the dragged element
-    parentImgRef.attr("x", newX).attr("y", newY);
-
-    parentScreenRef.attr(
-      "transform",
-      `translate(${93 + newX + parentImgX}, ${132 + newY + parentImgY})`
-    );
+  function handleZoom(e: any) {
+    parentGroup.attr("transform", e.transform);
   }
 
-  let parentVal;
+  const zoom = d3
+    .zoom<SVGSVGElement, any>()
+    .scaleExtent([0.8, 2])
+    .on("zoom", (e) => handleZoom(e));
 
-  function handleZoom(e) {
-    console.log("zoomed", e);
-    // Update the transform of the chart elements
-    const k = e.transform?.k;
-
-    parentImgRef.attr("transform", e.transform);
-
-
-    parentScreenRef.attr(
-      "transform",
-      `translate(${parentVal[0]}, ${parentVal[1]}) scale(${k})`
-    );
-  }
+  const initialTransform = d3.zoomIdentity
+    .translate(window.innerWidth - 900, window.innerHeight - 900)
+    .scale(1.3);
 
   function registerDragEvents() {
-    let initialCoord: ICoordinates;
-    parentImgRef.call(
-      d3
-        .drag()
-        .on("start", (e) => {
-          parentImgStartCoord = {
-            xCoordinate: +parentImgRef?.attr("x"),
-            yCoordinate: +parentImgRef?.attr("y"),
-          };
-          initialCoord = { xCoordinate: e?.x, yCoordinate: e?.y };
-        })
-        .on("drag", (e) => {
-          handleDrag(
-            e?.x - initialCoord?.xCoordinate,
-            e?.y - initialCoord?.yCoordinate
-          );
-        })
-    );
-
-    parentImgRef
-      .call(
-        d3
-          .zoom()
-          .scaleExtent([0.5, 5]) // Set the zoom scale limits
-          .on("start", () => {
-            console.log(parentImgRef.attr("x"), parentImgRef.attr("transform"));
-            parentVal = parentScreenRef
-              .attr("transform")
-              .split("(")[1]
-              .split(")");
-          })
-          .on("zoom", (e) => {
-            handleZoom(e);
-          })
-      )
+    parentSvgRef
+      .call(zoom)
+      .call(zoom.transform, initialTransform)
       .on("dblclick.zoom", null);
   }
 
+  let parentGroup: d3SelectionBase;
+
   function createParentImg() {
-    parentImgRef = parentSvgRef
+    parentGroup = parentSvgRef
+      .append("g")
+      .attr("class", "parent_group")
+      .attr(
+        "transform",
+        `translate(${window.innerWidth - 700}, ${window.innerHeight - 800})`
+      );
+
+    parentImgRef = parentGroup
       .append("image")
       .attr("x", parentImgX)
       .attr("y", parentImgY)
@@ -101,7 +63,11 @@ const useLaptopSvg = (skillName: string) => {
   }
 
   function createParentSvg() {
-    const layout = d3.select(".layout").style("width", "100%");
+    console.log(window.innerWidth);
+    const layout = d3
+      .select(".layout")
+      // .style("width", "100%")
+      .append("g");
 
     parentSvgRef = layout
       .append("svg")
@@ -110,9 +76,9 @@ const useLaptopSvg = (skillName: string) => {
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .attr("xmlns:xhtml", "http://www.w3.org/1999/xhtml")
-      .attr("width", "100%")
-      .attr("height", svgH)
-      .attr("viewBox", `0 0 ${svgW} ${svgH}`)
+      // .attr("width", "100%")
+      // .attr("height", svgH)
+      // .attr("viewBox", `0 0 ${svgW} ${svgH}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .style("background-color", "transparent")
       .style("border-radius", "inherit");
@@ -147,27 +113,28 @@ const useLaptopSvg = (skillName: string) => {
   }
 
   function createLaptopScreen() {
-    parentScreenRef = parentSvgRef
+    parentScreenRef = parentGroup
       .append("g")
       .attr("class", "laptop__screen")
       .attr("transform", "translate(93, 132)");
 
+    frame.createFrame(parentScreenRef, skillName);
+
     drawTaperedRect(0, 0, 407, 252, 4);
 
     parentScreenRef
-      .append("image")
-      .attr("transform", "translate(0, -10)")
-      .attr("width", 407)
-      .attr("height", 252)
-      .attr("xlink:href", desktop);
+      .append("use")
+      // .attr("transform", "translate(0, -10)")
+      .attr("xlink:href", "#myCustomShape");
 
-    parentScreenRef.append("text").attr("class", "screen_text");
+    parentImgRef.raise();
   }
 
   function onSkillPosterClk() {
     parentSvgRef = d3.select(".laptop_svg");
     parentScreenRef = parentSvgRef.select(".laptop__screen");
-    parentScreenRef.select(".screen_text").text(skillName);
+
+    frame.updateFrame(skillName);
   }
 
   function init() {

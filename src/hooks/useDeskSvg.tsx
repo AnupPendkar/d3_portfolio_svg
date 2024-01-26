@@ -5,23 +5,15 @@ import angular from "../assets/angular.svg";
 import react from "../assets/react.svg";
 import node from "../assets/node.svg";
 import js from "../assets/js.png";
-import { ICoordinates, d3SelectionBase } from "../models";
+import { d3SelectionBase } from "../models";
 
 const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
-  const svgW = 700;
-  const svgH = 700;
-
   const parentImgWidth = 600;
   const parentImgHeight = 600;
   const parentImgX = 0;
   const parentImgY = 0;
-
-  let parentImgStartCoord: ICoordinates;
-
   let parentSvgRef: d3SelectionBase;
-  let parentImgRef: d3SelectionBase;
-
-  const posterCardCollections: d3SelectionBase[] = [];
+  let parentGroupRef: d3SelectionBase;
 
   function createPosterCard(
     skillName: string,
@@ -32,7 +24,7 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
     y: number,
     rotate: number = 0
   ) {
-    const group = parentSvgRef
+    const group = parentGroupRef
       .append("g")
       .attr("class", "desk_card_group")
       .datum({ x, y, rotate })
@@ -68,71 +60,50 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
       .attr("transform", "translate(7.5, 7.5)")
       .attr("xlink:href", img)
       .style("pointer-events", "none");
-
-    posterCardCollections.push(group);
-  }
-
-  function setDeskCardWidthHeight(x: number, y: number) {
-    posterCardCollections.forEach((val) => {
-      const b = val?.["_groups"]?.[0]?.[0]?.__data__;
-      val.attr(
-        "transform",
-        `translate(${b?.x + x + parentImgX}, ${b?.y + y + parentImgY}) rotate(${
-          b?.rotate
-        })`
-      );
-    });
-  }
-
-  function handleDrag(x: number, y: number) {
-    const newX = parentImgStartCoord?.xCoordinate + x;
-    const newY = parentImgStartCoord?.yCoordinate + y;
-    // Update the position of the dragged element
-    parentImgRef.attr("x", newX).attr("y", newY);
-    setDeskCardWidthHeight(newX, newY);
   }
 
   function createParentSvg() {
-    const layout = d3.select(".layout").style("width", "100%");
+    const layout = d3.select(".layout").style("width", "100%").append("g");
 
     parentSvgRef = layout
       .append("svg")
-      .attr('class', 'desk_svg')
+      .attr("class", "desk_svg")
       .attr("version", "1.1")
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .attr("xmlns:xhtml", "http://www.w3.org/1999/xhtml")
-      .attr("width", "100%")
-      .attr("height", svgH)
-      .attr("viewBox", `0 0 ${svgW} ${svgH}`)
+      // .attr("width", "100%")
+      // .attr("height", svgH)
+      // .attr("viewBox", `0 0 ${svgW} ${svgH}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .style("background-color", "transparent")
       .style("border-radius", "inherit");
   }
 
+  function handleZoom(e) {
+    parentGroupRef.attr("transform", e.transform);
+  }
+
+  const zoom = d3
+    .zoom<SVGSVGElement, any>()
+    .scaleExtent([0.8, 1.5])
+    .on("zoom", (e) => handleZoom(e));
+
+  const initialTransform = d3.zoomIdentity
+    .translate(10, window.innerHeight - 800)
+    .scale(1);
+
   function registerDragEvents() {
-    let initialCoord: ICoordinates;
-    parentImgRef.call(
-      d3
-        .drag()
-        .on("start", (e) => {
-          parentImgStartCoord = {
-            xCoordinate: +parentImgRef?.attr("x"),
-            yCoordinate: +parentImgRef?.attr("y"),
-          };
-          initialCoord = { xCoordinate: e?.x, yCoordinate: e?.y };
-        })
-        .on("drag", (e) => {
-          handleDrag(
-            e?.x - initialCoord?.xCoordinate,
-            e?.y - initialCoord?.yCoordinate
-          );
-        })
-    );
+    parentSvgRef
+      .call(zoom)
+      .call(zoom.transform, initialTransform)
+      .on("dblclick.zoom", null);
   }
 
   function createParentImg() {
-    parentImgRef = parentSvgRef
+    parentGroupRef = parentSvgRef.append("g").attr("class", "svg_group");
+
+    parentGroupRef
       .append("image")
       .attr("x", parentImgX)
       .attr("y", parentImgY)

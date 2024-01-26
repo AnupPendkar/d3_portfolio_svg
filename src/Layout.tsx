@@ -13,8 +13,8 @@ const Layout = () => {
   }
 
   React.useEffect(() => {
-    d3.select(".laptop_svg").remove();
-    d3.select(".desk_svg").remove();
+    d3.select(".layout").remove();
+    d3.select(".lay").append("g").attr("class", "layout");
 
     initDeskSvg();
     initLaptopSvg();
@@ -22,7 +22,7 @@ const Layout = () => {
 
   React.useEffect(() => {});
 
-  return <div className="layout flex"></div>;
+  return <svg className="lay h-full w-screen"></svg>;
 };
 
 export default Layout;
