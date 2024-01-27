@@ -118,14 +118,11 @@ const useLaptopSvg = (skillName: string) => {
       .attr("class", "laptop__screen")
       .attr("transform", "translate(93, 132)");
 
-    frame.createFrame(parentScreenRef, skillName);
+    frame.createFrame(parentScreenRef, "desktop");
 
     drawTaperedRect(0, 0, 407, 252, 4);
 
-    parentScreenRef
-      .append("use")
-      // .attr("transform", "translate(0, -10)")
-      .attr("xlink:href", "#myCustomShape");
+    parentScreenRef.append("use").attr("xlink:href", "#myCustomShape");
 
     parentImgRef.raise();
   }
