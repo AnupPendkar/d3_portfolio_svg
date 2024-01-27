@@ -86,7 +86,7 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
 
   const zoom = d3
     .zoom<SVGSVGElement, any>()
-    .scaleExtent([0.8, 1.5])
+    .scaleExtent([0.5, 1.5])
     .on("zoom", (e) => handleZoom(e));
 
   const initialTransform = d3.zoomIdentity

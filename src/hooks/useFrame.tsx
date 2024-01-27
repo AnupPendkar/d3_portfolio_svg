@@ -19,10 +19,10 @@ const useFrame = () => {
 
     defs
       .append("image")
-      .attr("class", "def__img")
+      .attr("class", "desktop__img")
       .attr("width", 407)
       .attr("height", 251)
-      .attr("xlink:href", getIconBySkillName(skillName)?.icon);
+      .attr("xlink:href", desktop);
   }
 
   function getIconBySkillName(skillName: string) {
@@ -44,26 +44,58 @@ const useFrame = () => {
     }
   }
 
-  function createChromeFrame() {
+  function createChromeFrame(skillName: string) {
     const defs = d3.select(".frame__group");
 
-    const chrome_bar = d3.select(".chrome_bar")?.empty();
+    const chrome_bar = d3.select(".chrome__img")?.empty();
+
     if (!chrome_bar) {
+      d3.select(".chrome__img")
+        .attr("height", 242)
+        .attr("xlink:href", getIconBySkillName(skillName)?.icon);
+
+      d3.select(".skill_icon").attr(
+        "xlink:href",
+        getIconBySkillName(skillName)?.icon
+      );
+
+      d3.select(".chrome_tab_text").text(getIconBySkillName(skillName)?.name);
       return;
     }
 
-    defs
-      .append("image")
-      .attr("class", "chrome_bar")
+    const chromeGroup = defs.append("g").attr("class", "chrome__group");
+
+    chromeGroup
+      .append("rect")
       .attr("width", 407)
+      .attr("height", 242)
+      .attr("transform", "translate(0, 24)")
+      .style("pointer-events", "visible")
+      .attr("fill", "white");
+
+    chromeGroup
+      .append("image")
+      .attr("class", "chrome__img")
+      .attr("width", 407)
+      .attr("height", 242)
+      .attr("transform", "translate(0, 24)")
+      .style("pointer-events", "visible")
+      .attr("xlink:href", getIconBySkillName(skillName)?.icon);
+
+    chromeGroup
+      .append("image")
+      .attr("class", "chrome__bar")
+      .attr("width", 407)
+      .style("pointer-events", "visible")
       .attr("xlink:href", chromeBar);
 
-    const chromeBarGr = defs.append("g");
+    const chromeBarGr = chromeGroup.append("g");
 
     chromeBarGr
       .append("image")
       .attr("class", "chrome_tab")
       .attr("width", 76)
+      .style("pointer-events", "visible")
       .attr("xlink:href", chromeTab);
 
     chromeBarGr
@@ -72,7 +104,8 @@ const useFrame = () => {
       .attr("width", 7)
       .attr("height", 5)
       .attr("transform", "translate(5, 3)")
-      .attr("xlink:href", angular);
+      .style("pointer-events", "visible")
+      .attr("xlink:href", getIconBySkillName(skillName)?.icon);
 
     chromeBarGr
       .append("text")
@@ -80,23 +113,13 @@ const useFrame = () => {
       .attr("x", 0)
       .attr("transform", "translate(14, 7)")
       .style("fill", "white")
-      .style("font-size", 5);
+      .style("pointer-events", "visible")
+      .style("font-size", 5)
+      .text(getIconBySkillName(skillName)?.name);
   }
 
   function updateFrame(skillName: string) {
-    createChromeFrame();
-
-    d3.select(".def__img")
-      .attr("transform", "translate(0, 24)")
-      .attr("height", 242)
-      .attr("xlink:href", getIconBySkillName(skillName)?.icon);
-
-    d3.select(".skill_icon").attr(
-      "xlink:href",
-      getIconBySkillName(skillName)?.icon
-    );
-
-    d3.select(".chrome_tab_text").text(getIconBySkillName(skillName)?.name);
+    createChromeFrame(skillName);
   }
 
   return {

@@ -24,7 +24,7 @@ const useLaptopSvg = (skillName: string) => {
 
   const zoom = d3
     .zoom<SVGSVGElement, any>()
-    .scaleExtent([0.8, 2])
+    .scaleExtent([0.5, 2])
     .on("zoom", (e) => handleZoom(e));
 
   const initialTransform = d3.zoomIdentity
@@ -112,6 +112,65 @@ const useLaptopSvg = (skillName: string) => {
       .attr("fill", "black");
   }
 
+  function performAction(className: string) {
+    switch (className) {
+      case "close_btn":
+        d3.select(".chrome__group").remove();
+        d3.select(".action_btn_group").remove();
+        break;
+
+      case "window_btn":
+        console.log("window");
+        break;
+
+      case "min_btn":
+        console.log("min");
+        break;
+    }
+  }
+
+  function createActionBtn(
+    btnGroupSelection: d3SelectionBase,
+    className: string,
+    color: string,
+    x: number
+  ) {
+    const btn = btnGroupSelection
+      .append("rect")
+      .attr("class", className)
+      .attr("width", 12)
+      .attr("height", 10)
+      .attr("x", x)
+      .attr("y", 1)
+      .style("opacity", 0.4)
+      .style("pointer-events", "all")
+      .on("click", () => {
+        performAction(className);
+      })
+      .on("mouseover", () => {
+        btn.attr("fill", color);
+      })
+      .on("mouseout", () => {
+        btn.attr("fill", "transparent");
+      });
+  }
+
+  function createActionBtns() {
+    if (!d3.select(".action_btn_group").empty()) {
+      return;
+    }
+
+    const actionBtnGroup = d3
+      .select(".parent_group")
+      .append("g")
+      .attr("class", "action_btn_group")
+      .attr("transform", "translate(93, 132)");
+
+    createActionBtn(actionBtnGroup, "close_btn", "red", 395);
+    createActionBtn(actionBtnGroup, "window_btn", "grey", 383);
+    createActionBtn(actionBtnGroup, "min_btn", "grey", 371);
+  }
+
   function createLaptopScreen() {
     parentScreenRef = parentGroup
       .append("g")
@@ -143,6 +202,7 @@ const useLaptopSvg = (skillName: string) => {
   React.useEffect(() => {
     if (skillName !== "") {
       onSkillPosterClk();
+      createActionBtns();
     }
   }, [skillName]);
 
