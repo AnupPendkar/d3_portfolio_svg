@@ -10,7 +10,7 @@ import chromeTab from "../assets/chrome_tab.png";
 import js from "../assets/js.png";
 
 const useFrame = () => {
-  function createFrame(parentScreenRef: d3SelectionBase, skillName: string) {
+  function createFrame(parentScreenRef: d3SelectionBase) {
     const defs = parentScreenRef
       .append("defs")
       .append("g")

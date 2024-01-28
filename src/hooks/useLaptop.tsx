@@ -177,7 +177,7 @@ const useLaptopSvg = (skillName: string) => {
       .attr("class", "laptop__screen")
       .attr("transform", "translate(93, 132)");
 
-    frame.createFrame(parentScreenRef, "desktop");
+    frame.createFrame(parentScreenRef);
 
     drawTaperedRect(0, 0, 407, 252, 4);
 
