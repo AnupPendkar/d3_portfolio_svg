@@ -1,14 +1,9 @@
 import React from "react";
-import useDeskSvg from "./hooks/useDeskSvg";
-import useLaptopSvg from "./hooks/useLaptop";
-import * as d3 from "d3";
 import DeskPersonSVG from "./components/DeskPersonSVG";
 import LaptopSVG from "./components/LaptopSVG";
 
 const Layout = () => {
   const [skillName, setSkillName] = React.useState("");
-  const { initDeskSvg } = useDeskSvg(onPosterClk);
-  const { initLaptopSvg } = useLaptopSvg(skillName);
 
   function onPosterClk(skillName: string) {
     setSkillName(skillName);
@@ -32,7 +27,7 @@ const Layout = () => {
   React.useEffect(() => {});
 
   return (
-    <svg className="layout h-full w-screen">
+    <svg className="layout h-[800px]  w-screen">
       <g className="layout_group">
         <DeskPersonSVG onPosterClk={onPosterClk} />
         <LaptopSVG skillName={skillName} />

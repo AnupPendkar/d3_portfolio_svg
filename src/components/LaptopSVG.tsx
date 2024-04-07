@@ -27,8 +27,8 @@ const LaptopSVG = ({ skillName }: { skillName: string }) => {
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .attr("xmlns:xhtml", "http://www.w3.org/1999/xhtml")
       // .attr("width", "100%")
-      // .attr("height", svgH)
-      // .attr("viewBox", `0 0 ${svgW} ${svgH}`)
+      // .attr("height", parentImgHeight)
+      // .attr("viewBox", `0 0 ${parentImgWidth} ${parentImgHeight}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .style("background-color", "transparent")
       .style("border-radius", "inherit");
@@ -45,16 +45,38 @@ const LaptopSVG = ({ skillName }: { skillName: string }) => {
 
   function getInitLayout() {
     if (window.innerWidth < 500) {
-      return { width: (window.innerWidth - 420) / 2, height: 340, scale: 0.7 };
+      return { width: (window.innerWidth - 350) / 2, height: 380, scale: 0.6 };
     } else if (window.innerWidth < 800) {
-      return { width: (window.innerWidth - 660) / 2, height: 440, scale: 1.1 };
-    } else if (window.innerWidth < 1200) {
-      return { width: (window.innerWidth - 1020) / 2, height: 440, scale: 1.7 };
+      return { width: (window.innerWidth - 500) / 2, height: 380, scale: 0.7 };
+    }else if (window.innerWidth < 1000) {
+      return {
+        width: window.innerWidth - 430,
+        height: (window.innerHeight - 600) / 2,
+        scale: 0.7,
+      };
+    }else if (window.innerWidth < 1200) {
+      return {
+        width: window.innerWidth - 490,
+        height: (window.innerHeight - 600) / 2,
+        scale: 0.75,
+      };
+    } else if (window.innerWidth < 1600) {
+      return {
+        width: window.innerWidth - 600,
+        height: (window.innerHeight - 630) / 2,
+        scale: 1,
+      };
+    } else if (window.innerWidth < 1800) {
+      return {
+        width: window.innerWidth - 750,
+        height: (window.innerHeight - 700) / 2,
+        scale: 1.1,
+      };
     } else {
       return {
-        width: window.innerWidth - 900,
-        height: (window.innerHeight - 780) / 2,
-        scale: 1.3,
+        width: window.innerWidth - 850,
+        height: (window.innerHeight - 700) / 2,
+        scale: 1.2,
       };
     }
   }

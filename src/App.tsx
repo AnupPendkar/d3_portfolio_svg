@@ -1,11 +1,21 @@
 import React from "react";
 import "./App.css";
-import Layout from "./Layout";
+import Homepage from "./pages/Homepage";
+import Header from "./comp/Header";
+import About from "./comp/About";
+import Experience from "./comp/Experience";
+import Projects from "./comp/Projects";
+import Contact from "./comp/Contact";
 
 function App() {
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <Layout />
+    <div className="App">
+      <Header />
+      <Homepage />
+      <About />
+      <Experience />
+      <Projects />
+      <Contact />
     </div>
   );
 }

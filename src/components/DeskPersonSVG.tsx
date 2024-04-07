@@ -28,8 +28,8 @@ const DeskPersonSVG = ({
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
       .attr("xmlns:xhtml", "http://www.w3.org/1999/xhtml")
       // .attr("width", "100%")
-      // .attr("height", svgH)
-      // .attr("viewBox", `0 0 ${svgW} ${svgH}`)
+      // .attr("height", parentImgHeight)
+      // .attr("viewBox", `0 0 ${parentImgWidth} ${parentImgHeight}`)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .style("background-color", "transparent")
       .style("border-radius", "inherit");
@@ -53,17 +53,34 @@ const DeskPersonSVG = ({
       };
     } else if (window.innerWidth < 800) {
       return {
-        width: (window.innerWidth - 480) / 2,
+        width: (window.innerWidth - 450) / 2,
         height: 20,
-        scale: 0.8,
+        scale: 0.6,
+      };
+    } else if (window.innerWidth < 1000) {
+      return {
+        width: -20,
+        height: (window.innerHeight - 600) / 2,
+        scale: 0.7,
       };
     } else if (window.innerWidth < 1200) {
-      return { width: (window.innerWidth - 600) / 2, height: 20, scale: 1 };
+      return {
+        width: 20,
+        height: (window.innerHeight - 600) / 2,
+        scale: 0.75,
+      };
+      // return { width: (window.innerWidth - 600) / 2, height: 20, scale: 0.7 };
+    } else if (window.innerWidth < 1700) {
+      return {
+        width: -20,
+        height: (window.innerHeight - 600) / 2,
+        scale: 0.9,
+      };
     } else {
       return {
-        width: 10,
-        height: (window.innerHeight - 600) / 2,
-        scale: 1,
+        width: 100,
+        height: (window.innerHeight - 650) / 2,
+        scale: 1.1,
       };
     }
   }
