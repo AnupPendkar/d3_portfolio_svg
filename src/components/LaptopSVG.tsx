@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import * as d3 from "d3";
 import laptop from "../assets/laptop.svg";
@@ -48,13 +49,13 @@ const LaptopSVG = ({ skillName }: { skillName: string }) => {
       return { width: (window.innerWidth - 350) / 2, height: 380, scale: 0.6 };
     } else if (window.innerWidth < 800) {
       return { width: (window.innerWidth - 500) / 2, height: 380, scale: 0.7 };
-    }else if (window.innerWidth < 1000) {
+    } else if (window.innerWidth < 1000) {
       return {
         width: window.innerWidth - 430,
         height: (window.innerHeight - 600) / 2,
         scale: 0.7,
       };
-    }else if (window.innerWidth < 1200) {
+    } else if (window.innerWidth < 1200) {
       return {
         width: window.innerWidth - 490,
         height: (window.innerHeight - 600) / 2,
@@ -89,7 +90,7 @@ const LaptopSVG = ({ skillName }: { skillName: string }) => {
     console.log(window.innerWidth);
     laptopSVGRef
       .call(zoom)
-      .call(zoom.transform, initialTransform)
+      .call(zoom.transform as any, initialTransform)
       .on("dblclick.zoom", null);
   }
 

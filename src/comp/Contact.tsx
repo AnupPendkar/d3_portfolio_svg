@@ -16,7 +16,7 @@ const Contact = () => {
               className="icon contact-icon email-icon"
             />
             <p>
-              <a href="mailto:examplemail@gmail.com">anuppendkar@gmail.com</a>
+              <a href="mailto:anuppendkar@gmail.com">anuppendkar@gmail.com</a>
             </p>
           </div>
           <div className="contact-info-container">
@@ -26,7 +26,13 @@ const Contact = () => {
               className="icon contact-icon"
             />
             <p>
-              <a href="https://www.linkedin.com">LinkedIn</a>
+              <a
+                onClick={() =>
+                  window.open("https://www.linkedin.com/in/anup-pendkar-8a9826196/", "_blank")
+                }
+              >
+                LinkedIn
+              </a>
             </p>
           </div>
         </div>

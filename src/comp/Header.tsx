@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <>
       <nav id="desktop-nav">
-        <div className="logo">John Doe</div>
+        <div className="logo">Anup Pendkar</div>
         <div>
           <ul className="nav-links">
             <li>

@@ -4,10 +4,19 @@ import { d3SelectionBase } from "../models";
 import angular from "../assets/angular.svg";
 import react from "../assets/react.svg";
 import node from "../assets/node.svg";
+import docker from "../assets/docker.svg";
+import redis from "../assets/redis.svg";
+import postgres from "../assets/postgres.svg";
+import ts from "../assets/typescript.svg";
+import electronJs from "../assets/electronJs.svg";
+import express from "../assets/express.svg";
 import desktop from "../assets/desktopc.png";
 import chromeBar from "../assets/chrome_bar.png";
 import chromeTab from "../assets/chrome_tab.png";
-import js from "../assets/js.png";
+import js from "../assets/js.svg";
+import git from "../assets/git.svg";
+import tailwind from "../assets/tailwind.svg";
+import materialUI from "../assets/materialUI.svg";
 
 const useFrame = () => {
   function createFrame(parentScreenRef: d3SelectionBase) {
@@ -36,8 +45,35 @@ const useFrame = () => {
       case "js":
         return { icon: js, name: "Javascript" };
 
+      case "express":
+        return { icon: express, name: "Express Js" };
+
       case "nodeJs":
         return { icon: node, name: "Node Js" };
+
+      case "electronJs":
+        return { icon: electronJs, name: "Electron Js" };
+
+      case "tailwind":
+        return { icon: tailwind, name: "Tailwind" };
+
+      case "docker":
+        return { icon: docker, name: "Docker" };
+
+      case "materialUI":
+        return { icon: materialUI, name: "Material UI" };
+
+      case "git":
+        return { icon: git, name: "Git" };
+
+      case "redis":
+        return { icon: redis, name: "Redis" };
+
+      case "postgres":
+        return { icon: postgres, name: "Postgres" };
+
+      case "ts":
+        return { icon: ts, name: "Typescript" };
 
       default:
         return { icon: desktop, name: "Desktop" };
@@ -51,7 +87,7 @@ const useFrame = () => {
 
     if (!chrome_bar) {
       d3.select(".chrome__img")
-        .attr("height", 242)
+        .attr("height", 210)
         .attr("xlink:href", getIconBySkillName(skillName)?.icon);
 
       d3.select(".skill_icon").attr(
@@ -76,8 +112,8 @@ const useFrame = () => {
     chromeGroup
       .append("image")
       .attr("class", "chrome__img")
-      .attr("width", 407)
-      .attr("height", 242)
+      .attr("width", 390)
+      .attr("height", 210)
       .attr("transform", "translate(0, 24)")
       .style("pointer-events", "visible")
       .attr("xlink:href", getIconBySkillName(skillName)?.icon);

@@ -1,10 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import * as d3 from "d3";
 import desk from "../assets/desk.svg";
 import angular from "../assets/angular.svg";
 import react from "../assets/react.svg";
 import node from "../assets/node.svg";
-import js from "../assets/js.png";
+import js from "../assets/js.svg";
+import electronJs from "../assets/electronJs.svg";
+import express from "../assets/express.svg";
+import docker from "../assets/docker.svg";
+import redis from "../assets/redis.svg";
+import ts from "../assets/typescript.svg";
+import tailwind from "../assets/tailwind.svg";
+import postgres from "../assets/postgres.svg";
+import materialUI from "../assets/materialUI.svg";
+import git from "../assets/git.svg";
 import { d3SelectionBase } from "../models";
 
 const DeskPersonSVG = ({
@@ -92,7 +102,7 @@ const DeskPersonSVG = ({
   function registerEvent() {
     deskPersonSVGRef
       .call(zoomNPanEvent)
-      .call(zoomNPanEvent.transform, initialScaleNTransform)
+      .call((zoomNPanEvent as any).transform, initialScaleNTransform)
       .on("dblclick.zoom", null);
   }
 
@@ -162,17 +172,20 @@ const DeskPersonSVG = ({
   function createSkillPosterCardOverlays() {
     createPosterCard("angular", 67, 98, angular, 128, 3);
     createPosterCard("react", 70, 98, react, 200, 3);
-
     createPosterCard("nodeJs", 67, 98, node, 287, 3);
     createPosterCard("js", 67, 98, js, 358, 3);
 
-    createPosterCard("js", 30, 30, js, 153, 176, -14);
-    createPosterCard("js", 30, 35, js, 189, 198, 44);
+    createPosterCard("ts", 60, 71, ts, 445, 3);
+    createPosterCard("express", 46, 37, express, 449, 113, -1);
+    createPosterCard("docker", 40, 33, docker, 455, 180, 10);
+    createPosterCard("git", 42, 35, git, 447, 270, -2);
 
-    createPosterCard("js", 30, 30, js, 354, 164, -3);
-    createPosterCard("js", 30, 35, js, 390, 168, 1);
+    createPosterCard("tailwind", 30, 30, tailwind, 153, 176, -14);
+    createPosterCard("materialUI", 30, 35, materialUI, 189, 198, 44);
 
-    createPosterCard("js", 32, 45, js, 381, 212, 3.5);
+    createPosterCard("electronJs", 30, 30, electronJs, 354, 164, -3);
+    createPosterCard("postgres", 30, 35, postgres, 390, 168, 1);
+    createPosterCard("redis", 32, 45, redis, 381, 212, 3.5);
   }
 
   function initializeDeskPersonSvg() {

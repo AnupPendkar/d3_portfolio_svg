@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import * as d3 from "d3";
 import laptop from "../assets/laptop.svg";
@@ -6,8 +7,6 @@ import useFrame from "./useFrame";
 
 const useLaptopSvg = (skillName: string) => {
   const frame = useFrame();
-  const svgW = 700;
-  const svgH = window.innerHeight;
 
   const parentImgWidth = 600;
   const parentImgHeight = 600;
@@ -34,7 +33,7 @@ const useLaptopSvg = (skillName: string) => {
   function registerDragEvents() {
     parentSvgRef
       .call(zoom)
-      .call(zoom.transform, initialTransform)
+      .call(zoom.transform as any, initialTransform)
       .on("dblclick.zoom", null);
   }
 

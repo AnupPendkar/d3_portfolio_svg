@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import * as d3 from "d3";
 import desk from "../assets/desk.svg";
 import angular from "../assets/angular.svg";
 import react from "../assets/react.svg";
 import node from "../assets/node.svg";
-import js from "../assets/js.png";
+import js from "../assets/js.svg";
+import electronJs from "../assets/electronJs.svg";
 import { d3SelectionBase } from "../models";
 
 const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
@@ -96,7 +98,7 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
   function registerDragEvents() {
     parentSvgRef
       .call(zoom)
-      .call(zoom.transform, initialTransform)
+      .call(zoom.transform as any, initialTransform)
       .on("dblclick.zoom", null);
   }
 
@@ -121,7 +123,7 @@ const useDeskSvg = (onPosterClk: (skillName: string) => void) => {
     createPosterCard("react", 70, 98, react, 200, 3);
 
     createPosterCard("nodeJs", 67, 98, node, 287, 3);
-    createPosterCard("js", 67, 98, js, 358, 3);
+    createPosterCard("electronJs", 67, 98, electronJs, 358, 3);
 
     createPosterCard("js", 30, 30, js, 153, 176, -14);
     createPosterCard("js", 30, 35, js, 189, 198, 44);
