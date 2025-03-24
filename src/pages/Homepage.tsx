@@ -1,50 +1,36 @@
-import React from "react";
 import Layout from "../Layout";
 import { TypeAnimation } from "react-type-animation";
 
 const Homepage = () => {
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="flex justify-center">
-        <div className="flex flex-col justify-center sm:items-center mt-[40px] lg:translate-y-10 w-[80vw]">
-          <TypeAnimation
-            sequence={[
-              "I'm Frontend Developer.",
-              1500,
-              "I'm Backend Developer.",
-              1500,
-              // "Created Desktop Apps.",
-              // 1500,
-            ]}
-            speed={30}
-            style={{
-              textWrap: "wrap",
-              fontSize: "3rem",
-              lineHeight: 1,
-              fontWeight: 700,
-              // textAlign: "center",
-              marginBottom: "1rem",
-            }}
-            repeat={Infinity}
-          />
-          <p className="text-2xl text-[#B1A596]">
-            I design and code beautifully simple things, and I love what I do.
-          </p>
-        </div>
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center text-center mt-2 lg:mt-5">
+        <TypeAnimation
+          sequence={[
+            "Frontend Developer.",
+            1500,
+            "Creating smooth UIs.",
+            1500,
+            "Writing clean code.",
+            1500,
+          ]}
+          speed={40}
+          style={{
+            fontSize: "2.4rem",
+            fontWeight: 700,
+            marginBottom: "1rem",
+            whiteSpace: "nowrap",
+          }}
+          repeat={Infinity}
+        />
+
+        <p className="text-xl text-gray-500 max-w-xl">
+          I specialize in designing and developing intuitive, high-performance web applications.
+        </p>
       </div>
-      <div className="w-full">
+      <div className="w-full mt-5 md:mt-5 lg:mt-5">
         <Layout />
       </div>
-      {/* <div className="flex flex-col justify-center items-center mt-[80px] px-[30px] w-fit md:px-[100px] py-8">
-        <h2 className="text-3xl font-bold text-center mb-4">About me</h2>
-        <UserProfile />
-      </div>
-
-      <div className="mt-[150px]">
-        <Projects />
-      </div>
-
-      <Footer /> */}
     </div>
   );
 };

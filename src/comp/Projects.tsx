@@ -3,6 +3,7 @@ import arrow from "../assets/arrow.png";
 import blogAppProject from "../assets/blog_app_project.png";
 import warehouseProject from "../assets/warehouse.png";
 import dataCapture from "../assets/data_capture.png";
+import fitnessTracker from "../assets/fitness_tracker.png";
 import { Lightbox } from "react-modal-image";
 
 interface IProjectMetatData {
@@ -24,22 +25,29 @@ const Projects = () => {
 
   const projectMetaData: IProjectMetatData[] = [
     {
-      name: "Designed and Implemented Warehouse Layout Visualization Using D3 JS",
+      name: "Warehouse Layout Visualizer",
       imgSrc: warehouseProject,
       gitUrl: "",
       liveDemoUrl: "",
       hasUrl: false,
     },
     {
-      name: "Full Stack Blog App",
+      name: "StoryHaven",
       imgSrc: blogAppProject,
       gitUrl: "https://github.com/AnupPendkar/blog_app",
       liveDemoUrl: "https://storyhavenblog.onrender.com/#/homepage",
       hasUrl: true,
     },
     {
-      name: "Developed Desktop Application using Electron JS to save CCTV camera streams",
+      name: "RTSP CCTV Stream Capture & Monitoring Desktop App",
       imgSrc: dataCapture,
+      gitUrl: "",
+      liveDemoUrl: "",
+      hasUrl: false,
+    },
+    {
+      name: "Fitness Tracker App",
+      imgSrc: fitnessTracker,
       gitUrl: "",
       liveDemoUrl: "",
       hasUrl: false,
@@ -66,6 +74,7 @@ const Projects = () => {
                   className="article-container cursor-pointer"
                 >
                   <img
+                  style={{width: "272px", height: "130px", objectFit: "contain"}}
                     src={project?.imgSrc}
                     alt={project?.name}
                     className="project-img"

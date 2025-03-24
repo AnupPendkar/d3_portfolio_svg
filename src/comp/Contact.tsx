@@ -1,6 +1,7 @@
 import React from "react";
 import email from "../assets/email.png";
 import linkedin from "../assets/linkedin.png";
+import phone from "../assets/mobile.png"; // Add an appropriate phone icon to assets
 
 const Contact = () => {
   return (
@@ -21,11 +22,21 @@ const Contact = () => {
           </div>
           <div className="contact-info-container">
             <img
+              src={phone}
+              alt="Phone icon"
+              className="icon contact-icon"
+            />
+            <p>
+              <a href="tel:+918208028571">+918208028571</a>
+            </p>
+          </div>
+          <div className="contact-info-container">
+            <img
               src={linkedin}
               alt="LinkedIn icon"
               className="icon contact-icon"
             />
-            <p>
+            <p style={{ cursor: "pointer" }}>
               <a
                 onClick={() =>
                   window.open("https://www.linkedin.com/in/anup-pendkar-8a9826196/", "_blank")

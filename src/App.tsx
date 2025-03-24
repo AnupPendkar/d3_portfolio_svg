@@ -6,17 +6,21 @@ import About from "./comp/About";
 import Experience from "./comp/Experience";
 import Projects from "./comp/Projects";
 import Contact from "./comp/Contact";
+import { ThemeProvider } from "./ThemeContext";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Homepage />
-      <About />
-      <Experience />
-      <Projects />
-      <Contact />
-    </div>
+    <ThemeProvider>
+      <div className="App">
+
+        <Header />
+        <Homepage />
+        <About />
+        <Experience />
+        <Projects />
+        <Contact />
+      </div>
+    </ThemeProvider>
   );
 }
 

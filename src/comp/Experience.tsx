@@ -5,15 +5,15 @@ import arrow from "../assets/arrow.png";
 const Experience = () => {
   const frontendSkills = [
     {
-      name: "HTML",
+      name: "React Js",
       experience: "Experienced",
     },
     {
-      name: "CSS",
-      experience: "Experienced",
+      name: "React Native",
+      experience: "Intermediate",
     },
     {
-      name: "Sass",
+      name: "Angular",
       experience: "Experienced",
     },
     {
@@ -22,15 +22,27 @@ const Experience = () => {
     },
     {
       name: "TypeScript",
-      experience: "Intermediate",
+      experience: "Experienced",
     },
     {
-      name: "React Js",
-      experience: "Intermediate",
+      name: "HTML5",
+      experience: "Experienced",
     },
     {
-      name: "Angular",
-      experience: "Intermediate",
+      name: "CSS3",
+      experience: "Experienced",
+    },
+    {
+      name: "Sass",
+      experience: "Experienced",
+    },
+    {
+      name: "Tailwind",
+      experience: "Experienced",
+    },
+    {
+      name: "D3js",
+      experience: "Experienced",
     },
     {
       name: "Electron Js",
@@ -56,16 +68,24 @@ const Experience = () => {
       experience: "Intermediate",
     },
     {
-      name: "Redis",
-      experience: "Basic",
+      name: "Micro-Frontends",
+      experience: "Intermediate",
     },
-    // {
-    //   name: "",
-    //   experience: "",
-    // },
+    {
+      name: "Docker",
+      experience: "Intermediate",
+    },
+    {
+      name: "Fabricjs",
+      experience: "Intermediate",
+    },
+    {
+      name: "Redux",
+      experience: "Experienced",
+    },
   ];
 
-  function onNextClk() {}
+  function onNextClk() { }
 
   return (
     <>
@@ -93,7 +113,7 @@ const Experience = () => {
               </div>
             </div>
             <div className="details-container">
-              <h2 className="experience-sub-title">Backend Development</h2>
+              <h2 className="experience-sub-title">Others</h2>
               <div className="article-container">
                 {backendSkills?.map((skill, idx) => (
                   <article key={idx}>
@@ -106,6 +126,7 @@ const Experience = () => {
                       <h3>{skill?.name}</h3>
                       <p>{skill?.experience}</p>
                     </div>
+
                   </article>
                 ))}
               </div>
